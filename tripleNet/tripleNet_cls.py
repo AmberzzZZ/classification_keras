@@ -68,7 +68,7 @@ def base_model(input_shape=(28,28,1)):
     x = Conv2D(256,(5,5),padding='same',activation='relu',name='conv2')(x)
     x = MaxPooling2D((2,2),(2,2),padding='same',name='pool2')(x)
     x = Flatten(name='flatten')(x)
-    x = Dense(4,name='embeddings')(x)
+    x = Dense(100,name='embeddings')(x)
     model = Model(input=input, output=x)
     # plot_model(model, to_file='images/base_model.png', show_shapes=True, show_layer_names=True)
 
