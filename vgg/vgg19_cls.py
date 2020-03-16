@@ -136,7 +136,7 @@ if __name__ == '__main__':
         imgs = glob.glob(each_cls+"/*")
         lbs = [idx] * len(imgs)
         img_lst += zip(imgs, lbs)
-    print("detecting %d images belonging to %d classes" % (len(imgs), len(cate)))
+    print("detecting %d images belonging to %d classes" % (len(img_lst), len(cate)))
 
     val_path = "./val"
 
@@ -146,9 +146,10 @@ if __name__ == '__main__':
 
     # model
     model = vgg19_model(nb_classes=nb_classes, img_rows=image_size, img_cols=image_size, RGB=rgb, is_plot_model=True)
+    model.summary()
 
     # fit generator
-    history_ft = train_model(model, n_epoch, train_generator, 1, validation_generator, 1, 'v19', is_load_model=False)
+    # history_ft = train_model(model, n_epoch, train_generator, 1, validation_generator, 1, 'v19', is_load_model=False)
 
     # plot_training(history_ft, n_epoch)
 
