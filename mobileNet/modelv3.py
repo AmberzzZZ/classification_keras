@@ -32,7 +32,10 @@ def MobileNetV3(input_shape=(224,224,3), input_tensor=None, n_classes=1000, se_r
 
     # top
     x = GlobalAveragePooling2D()(x)
-    x = Dense(n_classes, activation='softmax')(x)
+    x = Reshape((1,1,x._keras_shape[-1]))(x)
+    x = Conv2D(1280, 1, strides=1, padding='same', activation=hard_swish)(x)
+    x = Conv2D(n_classes, 1, strides=1, padding='same', activation='softmax')(x)
+    x = Reshape((n_classes, ))(x)
 
     # model
     model = Model(inpt, x)
@@ -62,7 +65,8 @@ def inverted_se_res_block(x, filters, kernel_size, strides, activation, expansio
     inpt = x
     in_channels = x._keras_shape[-1]
     # expand: conv-bn-activation
-    x = Conv_BN(x, int(in_channels*expansion), kernel_size=1, strides=1, activation=activation)
+    if expansion > 1:
+        x = Conv_BN(x, int(in_channels*expansion), kernel_size=1, strides=1, activation=activation)
     # dw: dwconv-bn-activation
     x = DW_Conv_BN(x, kernel_size=kernel_size, strides=strides, depth_multiplier=1, activation=activation)
     # se:
